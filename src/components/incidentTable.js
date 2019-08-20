@@ -10,7 +10,7 @@ export class List extends Component{
   }
 
   componentDidMount(){
-    axios.get('http://localhost:4000/incidents')
+    axios.get('https://young-mesa-17828.herokuapp.com/incidents')
                     .then(res=>{
 
                       this.setState({incidents:res.data})

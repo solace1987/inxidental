@@ -45,7 +45,7 @@ export class Record extends Component{
      
       data=this.state;
         console.log(this.state)   
-      axios.post('http://127.0.0.1:4000/incidents/add', data).then(res=>console.log(res.data));
+      axios.post('https://young-mesa-17828.herokuapp.com/incidents/add', data).then(res=>console.log(res.data));
       this.setState({
         date:'',
         user:'',
