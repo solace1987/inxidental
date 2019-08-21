@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Grid, Button, Form, Select, TextArea,Divider} from 'semantic-ui-react'
 import axios from 'axios';
-
+import {Redirect} from "react-router-dom";
 let data;
 
 let capital=(word)=>{
@@ -14,7 +14,7 @@ const  deptOption =[{value:'HR',text:"HR"},{value:'finance',text:"Finance"},
 
 const categoryOption=[{value:'Network',text:"Network"},{value:'Hardware',text:"Hardware"},
                       {value:'Software',text:"Software"},{value:'Web',text:"Web"}]
-export class Record extends Component{
+export class edit extends Component{
 
     constructor(props){
     super(props)
@@ -28,6 +28,7 @@ export class Record extends Component{
                     priority:'',
                      reso:'',
                      status:'',
+                     redirect:false
                    }
 
       this.handleChange=this.handleChange.bind(this);
@@ -42,24 +43,46 @@ export class Record extends Component{
 
 
     handleSubmit(e){
-     
+     e.preventDefault();
+     console.log(this.props.size)
       data=this.state;
         console.log(this.state)   
-      axios.post('https://young-mesa-17828.herokuapp.com/incidents/add', data).then(res=>console.log(res.data));
-      this.setState({
-        date:'',
-        user:'',
-        dept:'',
-        incident:'',
-        category:'',
-        descri:'',
-        priority:'',
-         reso:'',
-         status:''
-              })
+      axios.post('https://young-mesa-17828.herokuapp.com/incidents/update/'+this.props.match.params.id, data).then(res=>console.log(res.data));
+
+      this.setState({redirect: true});
+    
+        
+
+    }
+
+
+    componentDidMount(){
+     axios.get('https://young-mesa-17828.herokuapp.com/incidents/'+this.props.match.params.id)
+        .then(response=>{
+          this.setState(
+            {
+              user:response.data.user,
+              dept:response.data.dept,
+              incident:response.data.incident,
+              category:response.data.category,
+              descri:response.data.descri,
+              priority:response.data.priority,
+               reso:response.data.reso,
+               status:response.data.status
+                    }
+          )
+
+        })
+
+
     }
 
     render(){
+        if (this.state.redirect===true){
+          return <Redirect push to="/" />;
+
+        }
+
     return(
   <Form style={{marginTop:40}} onSubmit={this.handleSubmit}>
     <Grid stackable columns={2}>
@@ -130,7 +153,7 @@ export class Record extends Component{
   </Grid>
 
   <Grid style={{padding:15}} centered='true'>
-      <Button size='big' color='red'  type='submit' >Submit</Button>
+     <Button size='big' color='red'  type='submit' >Submit</Button>
       </Grid>
       <Divider />
 </Form>

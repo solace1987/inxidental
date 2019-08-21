@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import {Table} from 'semantic-ui-react'
 import axios from 'axios';
+import {Link} from "react-router-dom";
 
 
 export class List extends Component{
@@ -24,7 +25,7 @@ render(){
     return(
         this.state.incidents.map(incident=>{
           return (
-           <Table.Row>                  
+           <Table.Row key={incident.id}>                       
            <Table.Cell>{incident.date}</Table.Cell>
            <Table.Cell>{incident.user}</Table.Cell>
            <Table.Cell>{incident.dept}</Table.Cell>
@@ -34,6 +35,7 @@ render(){
            <Table.Cell>{incident.priority}</Table.Cell>
            <Table.Cell>{incident.reso}</Table.Cell>
            <Table.Cell>{incident.status}</Table.Cell>
+           <Table.Cell><Link to={'/edit/'+incident._id}><i aria-hidden="true" class="edit  icon"></i></Link></Table.Cell>
            </Table.Row>
 
           )
@@ -59,6 +61,7 @@ export const IncidentTable= ()=>{
      <Table.HeaderCell>priority</Table.HeaderCell>
       <Table.HeaderCell>Resolution</Table.HeaderCell>
      <Table.HeaderCell>Status</Table.HeaderCell>
+     <Table.HeaderCell>Edit</Table.HeaderCell>
    </Table.Row>
  </Table.Header>
  <Table.Body>
